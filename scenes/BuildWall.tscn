@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/build_wall.gd" id="1_build_wall"]
+[ext_resource type="Texture2D" path="res://assets/placeholder/build_wall.svg" id="2_wall_texture"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
 size = Vector2(32, 32)
@@ -10,9 +11,18 @@ collision_layer = 8
 collision_mask = 0
 script = ExtResource("1_build_wall")
 
-[node name="Polygon2D" type="Polygon2D" parent="."]
-color = Color(0.55, 0.18, 0.85, 1)
-polygon = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
+[node name="Visual" type="Sprite2D" parent="."]
+texture = ExtResource("2_wall_texture")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_wall")
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+visible = false
+offset_left = -16.0
+offset_top = -24.0
+offset_right = 16.0
+offset_bottom = -18.0
+max_value = 100.0
+value = 100.0
+show_percentage = false

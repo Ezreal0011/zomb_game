@@ -14,12 +14,18 @@ var hp: int = max_hp
 var attack_cooldown := 0.0
 var hit_stun_left := 0.0
 var player: Node2D
+var path_manager: Node
 var blocked_building: Node2D
 var game_manager: Node
 var is_flashing := false
+var path := PackedVector2Array()
+var path_index := 0
+var path_refresh_left := 0.0
+var last_player_cell := Vector2i(-999, -999)
 
-func setup(config: Dictionary, target_player: Node2D) -> void:
+func setup(config: Dictionary, target_player: Node2D, pathfinder: Node = null) -> void:
 	player = target_player
+	path_manager = pathfinder
 	max_hp = int(config.get("hp", max_hp))
 	hp = max_hp
 	_update_health_bar()
@@ -53,12 +59,14 @@ func _physics_process(delta: float) -> void:
 		_attack_player()
 		return
 
-	velocity = to_player.normalized() * move_speed
+	var move_direction := _get_path_direction(to_player)
+	velocity = move_direction * move_speed
 	move_and_slide()
 	blocked_building = _get_blocked_building()
 	if blocked_building != null:
 		velocity = Vector2.ZERO
 		_attack_building(blocked_building)
+		path_refresh_left = 0.0
 
 func take_damage(amount: int) -> void:
 	hp = max(hp - amount, 0)
@@ -86,7 +94,7 @@ func _attack_building(building: Node2D) -> void:
 	building.take_damage(attack_damage)
 
 func _get_blocked_building() -> Node2D:
-	for index in get_slide_collision_count():
+	for index in range(get_slide_collision_count()):
 		var collision := get_slide_collision(index)
 		var collider := collision.get_collider()
 		if collider is Node2D and collider.has_method("take_damage") and collider.is_in_group("player_buildings"):
@@ -101,6 +109,25 @@ func _award_resource_drop() -> void:
 
 	if game_manager != null:
 		game_manager.add_resource(resource_drop)
+
+func _get_path_direction(fallback: Vector2) -> Vector2:
+	path_refresh_left -= get_physics_process_delta_time()
+	if path_manager != null and path_refresh_left <= 0.0:
+		var player_cell: Vector2i = path_manager.get_world_cell(player.global_position)
+		if player_cell != last_player_cell or path_index >= path.size():
+			path_refresh_left = randf_range(0.35, 0.75)
+			last_player_cell = player_cell
+			path = path_manager.get_navigation_path(global_position, player.global_position)
+			path_index = 0
+		else:
+			path_refresh_left = 0.15
+
+	while path_index < path.size() and global_position.distance_to(path[path_index]) < 8.0:
+		path_index += 1
+
+	if path_index < path.size():
+		return (path[path_index] - global_position).normalized()
+	return fallback.normalized()
 
 func _update_health_bar() -> void:
 	var health_bar := get_node_or_null("HealthBar") as ProgressBar

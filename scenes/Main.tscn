@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="1_player_scene"]
 [ext_resource type="Script" path="res://scripts/game_manager.gd" id="2_game_manager"]
@@ -7,21 +7,8 @@
 [ext_resource type="Script" path="res://scripts/day_night_manager.gd" id="5_day_night_manager"]
 [ext_resource type="Script" path="res://scripts/wave_manager.gd" id="6_wave_manager"]
 [ext_resource type="Script" path="res://scripts/weapon_manager.gd" id="7_weapon_manager"]
-
-[sub_resource type="RectangleShape2D" id="WallShape_horizontal"]
-size = Vector2(320, 32)
-
-[sub_resource type="RectangleShape2D" id="WallShape_vertical"]
-size = Vector2(32, 256)
-
-[sub_resource type="RectangleShape2D" id="WallShape_long_horizontal"]
-size = Vector2(544, 32)
-
-[sub_resource type="RectangleShape2D" id="WallShape_long_vertical"]
-size = Vector2(32, 512)
-
-[sub_resource type="RectangleShape2D" id="WallShape_short_vertical"]
-size = Vector2(32, 160)
+[ext_resource type="Script" path="res://scripts/path_manager.gd" id="8_path_manager"]
+[ext_resource type="PackedScene" path="res://scenes/maps/TestMap.tscn" id="9_test_map"]
 
 [node name="Main" type="Node2D"]
 
@@ -48,11 +35,18 @@ script = ExtResource("6_wave_manager")
 enemies_container_path = NodePath("../World/Enemies")
 player_path = NodePath("../Player")
 game_manager_path = NodePath("../GameManager")
+path_manager_path = NodePath("../PathManager")
+
+[node name="PathManager" type="Node" parent="."]
+script = ExtResource("8_path_manager")
 
 [node name="BuildManager" type="Node2D" parent="."]
+z_index = 15
 script = ExtResource("4_build_manager")
 buildings_container_path = NodePath("../World/PlayerBuildings")
 game_manager_path = NodePath("../GameManager")
+ui_path = NodePath("../UI")
+path_manager_path = NodePath("../PathManager")
 
 [node name="Preview" type="Polygon2D" parent="BuildManager"]
 visible = false
@@ -62,135 +56,7 @@ polygon = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
 
 [node name="World" type="Node2D" parent="."]
 
-[node name="Ground" type="Polygon2D" parent="World"]
-color = Color(0.37, 0.37, 0.37, 1)
-polygon = PackedVector2Array(0, 0, 1280, 0, 1280, 960, 0, 960)
-
-[node name="DefaultWalls" type="Node2D" parent="World"]
-
-[node name="TopBoundary" type="StaticBody2D" parent="World/DefaultWalls"]
-position = Vector2(640, 16)
-collision_layer = 4
-collision_mask = 0
-
-[node name="Visual" type="Polygon2D" parent="World/DefaultWalls/TopBoundary"]
-color = Color(0, 0, 0, 1)
-polygon = PackedVector2Array(-640, -16, 640, -16, 640, 16, -640, 16)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="World/DefaultWalls/TopBoundary"]
-shape = SubResource("WallShape_long_horizontal")
-scale = Vector2(2.35294, 1)
-
-[node name="BottomBoundary" type="StaticBody2D" parent="World/DefaultWalls"]
-position = Vector2(640, 944)
-collision_layer = 4
-collision_mask = 0
-
-[node name="Visual" type="Polygon2D" parent="World/DefaultWalls/BottomBoundary"]
-color = Color(0, 0, 0, 1)
-polygon = PackedVector2Array(-640, -16, 640, -16, 640, 16, -640, 16)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="World/DefaultWalls/BottomBoundary"]
-shape = SubResource("WallShape_long_horizontal")
-scale = Vector2(2.35294, 1)
-
-[node name="LeftBoundary" type="StaticBody2D" parent="World/DefaultWalls"]
-position = Vector2(16, 480)
-collision_layer = 4
-collision_mask = 0
-
-[node name="Visual" type="Polygon2D" parent="World/DefaultWalls/LeftBoundary"]
-color = Color(0, 0, 0, 1)
-polygon = PackedVector2Array(-16, -480, 16, -480, 16, 480, -16, 480)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="World/DefaultWalls/LeftBoundary"]
-shape = SubResource("WallShape_long_vertical")
-scale = Vector2(1, 1.875)
-
-[node name="RightBoundary" type="StaticBody2D" parent="World/DefaultWalls"]
-position = Vector2(1264, 480)
-collision_layer = 4
-collision_mask = 0
-
-[node name="Visual" type="Polygon2D" parent="World/DefaultWalls/RightBoundary"]
-color = Color(0, 0, 0, 1)
-polygon = PackedVector2Array(-16, -480, 16, -480, 16, 480, -16, 480)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="World/DefaultWalls/RightBoundary"]
-shape = SubResource("WallShape_long_vertical")
-scale = Vector2(1, 1.875)
-
-[node name="RoomTop" type="StaticBody2D" parent="World/DefaultWalls"]
-position = Vector2(320, 240)
-collision_layer = 4
-collision_mask = 0
-
-[node name="Visual" type="Polygon2D" parent="World/DefaultWalls/RoomTop"]
-color = Color(0, 0, 0, 1)
-polygon = PackedVector2Array(-160, -16, 160, -16, 160, 16, -160, 16)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="World/DefaultWalls/RoomTop"]
-shape = SubResource("WallShape_horizontal")
-
-[node name="RoomLeft" type="StaticBody2D" parent="World/DefaultWalls"]
-position = Vector2(176, 384)
-collision_layer = 4
-collision_mask = 0
-
-[node name="Visual" type="Polygon2D" parent="World/DefaultWalls/RoomLeft"]
-color = Color(0, 0, 0, 1)
-polygon = PackedVector2Array(-16, -128, 16, -128, 16, 128, -16, 128)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="World/DefaultWalls/RoomLeft"]
-shape = SubResource("WallShape_vertical")
-
-[node name="RoomBottom" type="StaticBody2D" parent="World/DefaultWalls"]
-position = Vector2(384, 496)
-collision_layer = 4
-collision_mask = 0
-
-[node name="Visual" type="Polygon2D" parent="World/DefaultWalls/RoomBottom"]
-color = Color(0, 0, 0, 1)
-polygon = PackedVector2Array(-160, -16, 160, -16, 160, 16, -160, 16)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="World/DefaultWalls/RoomBottom"]
-shape = SubResource("WallShape_horizontal")
-
-[node name="CentralDivider" type="StaticBody2D" parent="World/DefaultWalls"]
-position = Vector2(656, 512)
-collision_layer = 4
-collision_mask = 0
-
-[node name="Visual" type="Polygon2D" parent="World/DefaultWalls/CentralDivider"]
-color = Color(0, 0, 0, 1)
-polygon = PackedVector2Array(-16, -256, 16, -256, 16, 256, -16, 256)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="World/DefaultWalls/CentralDivider"]
-shape = SubResource("WallShape_long_vertical")
-
-[node name="EastHall" type="StaticBody2D" parent="World/DefaultWalls"]
-position = Vector2(944, 304)
-collision_layer = 4
-collision_mask = 0
-
-[node name="Visual" type="Polygon2D" parent="World/DefaultWalls/EastHall"]
-color = Color(0, 0, 0, 1)
-polygon = PackedVector2Array(-272, -16, 272, -16, 272, 16, -272, 16)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="World/DefaultWalls/EastHall"]
-shape = SubResource("WallShape_long_horizontal")
-
-[node name="SouthPillar" type="StaticBody2D" parent="World/DefaultWalls"]
-position = Vector2(912, 720)
-collision_layer = 4
-collision_mask = 0
-
-[node name="Visual" type="Polygon2D" parent="World/DefaultWalls/SouthPillar"]
-color = Color(0, 0, 0, 1)
-polygon = PackedVector2Array(-16, -80, 16, -80, 16, 80, -16, 80)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="World/DefaultWalls/SouthPillar"]
-shape = SubResource("WallShape_short_vertical")
+[node name="CurrentMap" parent="World" instance=ExtResource("9_test_map")]
 
 [node name="PlayerBuildings" type="Node2D" parent="World"]
 
@@ -198,10 +64,9 @@ shape = SubResource("WallShape_short_vertical")
 
 [node name="Enemies" type="Node2D" parent="World"]
 
-[node name="SpawnPoints" type="Node2D" parent="World"]
-
 [node name="Player" parent="." instance=ExtResource("1_player_scene")]
 position = Vector2(1040, 480)
 
-
 [node name="UI" parent="." instance=ExtResource("3_ui_scene")]
+
+[editable path="World/CurrentMap"]

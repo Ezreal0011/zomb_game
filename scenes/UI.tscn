@@ -49,6 +49,21 @@ custom_minimum_size = Vector2(220, 24)
 text = "Time: 90"
 vertical_alignment = 1
 
+[node name="BuildHintLabel" type="Label" parent="."]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -180.0
+offset_top = -56.0
+offset_right = 180.0
+offset_bottom = -24.0
+text = "Wall: cost 3"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="StartLabel" type="Label" parent="."]
 anchors_preset = 8
 anchor_left = 0.5

@@ -8,6 +8,7 @@ extends CanvasLayer
 @onready var day_label: Label = $MarginContainer/VBoxContainer/DayLabel
 @onready var phase_label: Label = $MarginContainer/VBoxContainer/PhaseLabel
 @onready var time_label: Label = $MarginContainer/VBoxContainer/TimeLabel
+@onready var build_hint_label: Label = $BuildHintLabel
 @onready var game_over_label: Label = $GameOverLabel
 @onready var start_label: Label = $StartLabel
 
@@ -50,3 +51,9 @@ func set_start_screen(is_visible: bool) -> void:
 	if not is_node_ready():
 		await ready
 	start_label.visible = is_visible
+
+func set_build_hint(text: String) -> void:
+	if not is_node_ready():
+		await ready
+	build_hint_label.text = text
+	build_hint_label.visible = not text.is_empty()

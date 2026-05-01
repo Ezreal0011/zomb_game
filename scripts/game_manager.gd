@@ -23,6 +23,7 @@ var is_game_over := false
 var is_game_started := false
 var grid_size: int = 32
 var initial_resource_count: int = 40
+var map_controller: Node
 
 @onready var resources_container: Node2D = get_node(resources_container_path)
 @onready var player: Node2D = get_node(player_path)
@@ -33,6 +34,10 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	add_to_group("game_manager")
 	_load_config()
+	map_controller = get_tree().current_scene.get_node_or_null("World/CurrentMap")
+	if map_controller != null and not map_controller.is_node_ready():
+		await map_controller.ready
+	_apply_map_spawn()
 	if not ui.is_node_ready():
 		await ui.ready
 	resource_changed.connect(ui.set_resource_count)
@@ -48,6 +53,11 @@ func _ready() -> void:
 	await get_tree().physics_frame
 	spawn_resources(initial_resource_count)
 	get_tree().paused = true
+
+func _apply_map_spawn() -> void:
+	if map_controller != null and map_controller.has_method("get_player_spawn_position"):
+		var spawn_position: Vector2 = map_controller.get_player_spawn_position()
+		player.global_position = spawn_position
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
@@ -72,6 +82,9 @@ func try_spend_resource(amount: int) -> bool:
 	resource_count -= amount
 	resource_changed.emit(resource_count)
 	return true
+
+func has_resource(amount: int) -> bool:
+	return resource_count >= amount
 
 func advance_day() -> void:
 	current_day += 1

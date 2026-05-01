@@ -34,7 +34,7 @@ func try_upgrade() -> bool:
 		return false
 
 	var next_config: Dictionary = weapon_config[str(next_level)]
-	var cost := int(next_config.get("upgrade_cost", 0))
+	var cost: int = int(next_config.get("upgrade_cost", 0))
 	if not game_manager.try_spend_resource(cost):
 		return false
 

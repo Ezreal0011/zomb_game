@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/build_gate.gd" id="1_build_gate"]
+[ext_resource type="Texture2D" path="res://assets/placeholder/build_gate.svg" id="2_gate_texture"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gate"]
 size = Vector2(32, 32)
@@ -10,9 +11,18 @@ collision_layer = 128
 collision_mask = 0
 script = ExtResource("1_build_gate")
 
-[node name="Polygon2D" type="Polygon2D" parent="."]
-color = Color(0.1, 0.85, 0.25, 1)
-polygon = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
+[node name="Visual" type="Sprite2D" parent="."]
+texture = ExtResource("2_gate_texture")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_gate")
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+visible = false
+offset_left = -16.0
+offset_top = -24.0
+offset_right = 16.0
+offset_bottom = -18.0
+max_value = 80.0
+value = 80.0
+show_percentage = false

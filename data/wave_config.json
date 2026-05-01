@@ -1,0 +1,10 @@
+{
+  "base_day_enemy_count": 3,
+  "base_night_enemy_count": 15,
+  "night_enemy_increase_per_day": 8,
+  "enemy_power_scale_interval": 3,
+  "enemy_hp_scale": 1.2,
+  "enemy_damage_scale": 1.15,
+  "unlock_fast_enemy_day": 2,
+  "unlock_breaker_enemy_day": 4
+}

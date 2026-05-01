@@ -1,0 +1,10 @@
+{
+  "day_duration": 15,
+  "night_duration": 15,
+  "grid_size": 32,
+  "initial_resource_count": 40,
+  "resource_respawn_interval": 10,
+  "resource_respawn_count": 5,
+  "player_max_hp": 100,
+  "player_move_speed": 180
+}

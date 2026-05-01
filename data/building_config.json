@@ -1,0 +1,20 @@
+{
+  "wall": {
+    "id": "wall",
+    "name": "Wall",
+    "cost": 3,
+    "hp": 100,
+    "can_player_pass": false,
+    "can_enemy_pass": false,
+    "destructible": true
+  },
+  "gate": {
+    "id": "gate",
+    "name": "Gate",
+    "cost": 5,
+    "hp": 80,
+    "can_player_pass": true,
+    "can_enemy_pass": false,
+    "destructible": true
+  }
+}

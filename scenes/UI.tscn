@@ -1,0 +1,79 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui.gd" id="1_ui_script"]
+
+[node name="UI" type="CanvasLayer"]
+process_mode = 3
+script = ExtResource("1_ui_script")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+offsets_preset = 3
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = -16.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+custom_minimum_size = Vector2(220, 164)
+
+[node name="ResourceLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(220, 32)
+text = "Resources: 0"
+horizontal_alignment = 0
+vertical_alignment = 1
+
+[node name="HpLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(220, 24)
+text = "HP: 100 / 100"
+vertical_alignment = 1
+
+[node name="WeaponLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(220, 24)
+text = "Weapon: Lv.1"
+vertical_alignment = 1
+
+[node name="DayLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(220, 24)
+text = "Day: 1"
+vertical_alignment = 1
+
+[node name="PhaseLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(220, 24)
+text = "Phase: Day"
+vertical_alignment = 1
+
+[node name="TimeLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(220, 24)
+text = "Time: 90"
+vertical_alignment = 1
+
+[node name="StartLabel" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -240.0
+offset_top = -64.0
+offset_right = 240.0
+offset_bottom = 64.0
+text = "DAY NIGHT DEFENSE\nPress Enter to Start"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GameOverLabel" type="Label" parent="."]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -180.0
+offset_top = -44.0
+offset_right = 180.0
+offset_bottom = 44.0
+text = "GAME OVER\nPress R to Restart"
+horizontal_alignment = 1
+vertical_alignment = 1
